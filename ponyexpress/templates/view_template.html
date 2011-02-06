@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit E-mail Template</h2>
+<form action="/save_template/{{ doc._id }}" method="post">
+<input type="hidden" name="_id" value="{{ doc._id }}" />
+<table cellspacing="0">
+  <tbody>
+    <tr>
+      <td>Tag</td>
+      <td>
+       <strong>{{ doc._id }}</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>
+        <input type="text" name="name" value="{{ doc.name }}" />
+      </td>
+    </tr>
+    <tr>
+      <td>Content Type</td>
+      <td>
+        <select name="format">
+          <option value="text" {% if doc.format == 'text' %}selected{% endif %}>Plain Text</option>
+          <option value="html" {% if doc.format == 'html' %}selected{% endif %}>HTML</option>
+        </select>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% for i,r in contents %}
+
+{% if r.lang != 'NEW' %}
+  <input type="hidden" name="contents-{{ i }}.lang" value="{{ r.lang }}" />
+{% endif %}
+
+<hr>
+<h3>{{ r.lang.upper() }} version</h3>
+<table>
+  <tbody>
+    {% if r.lang == 'NEW' %}
+    <tr>
+      <td>Language (ie: ES)</td>
+      <td>
+        <input type="text" name="contents-{{ i }}.lang" value="{{ r.lang if r.lang != 'NEW' else '' }}" />
+      </td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td>Subject</td>
+      <td>
+        <input type="text" name="contents-{{ i }}.subject" value="{{ r.subject }}" />
+      </td>
+    </tr>
+    <tr>
+      <td>Body</td>
+      <td>
+        <textarea name="contents-{{ i }}.body" rows=10 cols=60>{{ r.body }}</textarea>
+      </td>
+    </tr>
+  </tbody>
+</table>
+{% endfor %}
+
+<input type="submit" name="" value="Save Template" />
+
+</form>
+{% endblock %}

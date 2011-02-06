@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Gearman V{{ gm_version }}, Ping {{ gm_ping }}</h2>
+<div style="width:250px;">
+  <table cellspacing="0" class="zebra" width="250">
+    <thead>
+      <tr>
+        <td>Task</td>
+        <td>Workers</td>
+        <td>Running</td>
+        <td>Queued</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in gm_status %}
+      <tr>
+        <td>{{ r['task'] }}</td>
+        <td>{{ r['workers'] }}</td>
+        <td>{{ r['running'] }}</td>
+        <td>{{ r['queued'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<!--
+<p><strong>Workers:</strong> {{ gm_workers }}</p>
+-->
+{% endblock %}

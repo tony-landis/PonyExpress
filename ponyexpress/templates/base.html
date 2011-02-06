@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>Pony Express</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+    <style type="text/css">
+        html, body { background-color:#f0f0ee; color:#222; }
+        #doc3 { margin:0; }
+        #hd { padding:1.2em 1.5em 0 1.5em; background-color:#7a1818; }
+        h1 { font-size:230%; color:#fff; }
+        #navigation { margin-top:1.5em; background-color:#262626; height:1%; }
+        #navigation li { float:left; display:inline; }
+        #navigation li a { display:block; color:#fff; text-decoration:none; }
+        #navigation li a:hover { text-decoration:underline; }
+        #primary-navigation li a { font-size:116%; padding:0.4em 1em; }
+        #primary-navigation li.active a { background-color:#f0f0ee; color:#000; }
+        #user-navigation { float:right; }
+        #user-navigation li a { font-size:93%; padding:0.5em 1em; }
+        #bd { padding:1.5em; }
+        h2 { font-size:153.9%; margin-bottom:0.5em; }
+        h3 { font-size:153.9%; margin-bottom:0.5em; }
+        .block { margin-bottom:1.5em; }
+        .block .hd { background-color:#7a1818; padding:0.7em 1em; color:#fff; border-bottom:10px solid #262626; }
+        .block .hd h2, .block .hd h3 { font-size:100%; margin-bottom:0; }
+        .block .bd { padding:1em; background-color:#fff; }
+        .block .bd h2 { color:#7a1818; }
+        .block .bd h3 { color:#7a1818; }
+        .tabs .hd { padding:0; }
+        .tabs .hd ul { height:1%; }
+        .tabs .hd ul li { float:left; }
+        .tabs .hd ul li a { display:block; color:#fff; text-decoration:none; padding:0.5em 1em; }
+        .tabs .hd ul li a:hover { background-color:#470E0E; }
+        .tabs .hd ul li.active a { background-color:#262626 !important; color:#fff; text-decoration:none; } /* important! fixes IE cascade issue */
+        .tabs .hd h2, .tabs .hd h3 { position:absolute; margin-left:-5000px; } /* Hidden SEO Header if needed */
+        .spaces .hd { background-color:transparent; }
+        .spaces .hd ul li { background-color:#7a1818; margin-right:0.1em; }
+        .rounded .hd,
+        .rounded .hd ul li,
+        .rounded .hd ul li a,
+        .rounded #navigation,
+        .rounded #navigation ul li,
+        .rounded #navigation ul li a {
+            -moz-border-radius-topright:7px;
+            -moz-border-radius-topleft:7px;
+            -webkit-border-top-right-radius:7px;
+            -webkit-border-top-left-radius:7px;
+        }
+        .block hr { background-color:#f0f0ee; color:#f0f0ee; height:1px; border:0; }
+        table { width:100%; margin-bottom:2em; }
+        table td, table th { padding:0.5em; }
+        table thead { background-color:#262626; color:#fff; font-weight:bold; }
+        table thead a { text-decoration:none; color:#fff; }
+        table thead a:hover { text-decoration:underline; }
+        table tbody a { text-decoration:underline; }
+        table.zebra tbody tr:nth-child(even) {background: #eee}
+        table.zebra tbody tr:nth-child(odd) {background: #fff}
+        ul.pager { text-align:right; }
+        ul.pager li { display:inline; }
+        ul.pager li a { padding:0.1em 0.3em; margin-right:0.3em; border:1px solid #000; text-decoration:none; color:#000; }
+        ul.pager li.active a, ul.pager li a:hover { background-color:#000; color:#fff; }
+        form label { font-weight:bold; }
+        form label span { font-weight:normal; color:#f00; font-size:85%; }
+        form span.info { font-style:italic; color:#aaa; font-size:85%; }
+        form .text { display:block; width:99%; border:1px solid #aaa; padding:0.3em; }
+        form .column { width:48%; }
+        form .left { float:left; }
+        form .right { float:right; }
+        .alert { padding:0.5em; text-align:center; }
+        .error { border:2px solid #fbb; background-color:#fdd; }
+        .warning { border:2px solid #fffaaa; background-color:#ffc; }
+        .notice { border:2px solid #1fdf00; background-color:#bbffb6; }
+        ol.list, ul.list, dl.list { margin-left:2em; margin-bottom:1em; }
+        ol.list li { list-style:decimal outside; }
+        ul.list li { list-style:disc outside; }
+        dl.list dd { margin-left:1em; }
+        ul.biglist { margin-bottom:1em; }
+        ul.biglist li { margin-top:-1px; border:1px solid #f0f0ee; border-width:1px 0 1px 0; }
+        ul.biglist li a { display:block; padding:0.5em 0; text-decoration:none; color:#000; }
+        ul.biglist li a:hover { text-decoration:underline; }
+        #ft { text-align:center; font-size:85%; padding:0.5em 1em; color:#262626; }
+        p { margin-bottom:1em; }
+        a { color:#7a1818; }
+        strong { font-weight:bold; }
+        em { font-style:italic; }
+        abbr, acronym { border-bottom:1px dotted #000; cursor:help; }
+        .small { font-size:85%; }
+        .gray { color:#999; }
+        .highlight { background-color:#ffffcc; }
+        .clear { clear:both; }
+        .text-left { text-align:left; }
+        .text-right { text-align:right; }
+        .text-center { text-align:center; }
+
+
+      html, body { background-color:#EBE1D3; }
+      h1, h2, h3 { color: #222; }
+      a { color:#0854C7; text-decoration: none; }
+      table thead { background-color:#685841;}
+      #hd { background-color: #967E59; }
+      #hd h1{ color: #fff;	}
+      #bd { background-color: #fff; color: #333; }
+      #primary-navigation li.active a { background-color: #fff; color:#333;}
+      #navigation { background-color: #064780; }
+      .block .hd { background-color: #A0C2DE; color: #333; border-bottom: 5px solid #064780 }
+      .tabs .hd { background-color: #064780; border-bottom: 5px solid #A0C2DE; }
+      .block .bd h2 { color:#967E59; }
+      .block .bd h3 { color:#967E59; }
+      .spaces .hd { background-color:transparent; }
+      .spaces .hd ul li { background-color:#187a7a; }
+      .tabs ul { background-color: #064780; }
+      .tabs .hd ul li a:hover { background-color:#CDEFFF; 	color: #333; }
+      .tabs .hd ul li.active a { background-color:#A0C2DE !important; color:#333; text-decoration:none; }
+      .spaces .hd ul li { background-color:#064780; margin-right:0.1em; }
+      ul.pager li a { padding:0.1em 0.3em; margin-right:0.3em; border:1px solid #ccc; text-decoration:none; color:#333; }
+      ul.pager li.active a, ul.pager li a:hover { background-color:#685841; color:#fff; }
+    </style>
+    <script src="http://yui.yahooapis.com/3.0.0pr2/build/yui/yui-min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    YUI().use('node', function(Y) {
+         function init() {
+            Y.all('#page-width-switcher a').on('click', function(e) {
+                Y.all('#page-width-switcher a.highlight').removeClass('highlight');
+                e.target.addClass('highlight');
+                document.body.id = e.target.get('title');
+                e.halt();
+            });
+
+            Y.all('#page-layout-switcher a').on('click', function(e) {
+                Y.all('#page-layout-switcher a.highlight').removeClass('highlight');
+                e.target.addClass('highlight');
+                doc = Y.get('body div:first');
+                doc.replaceClass(doc.get('className'), e.target.get('title'));
+                e.halt();
+            });
+
+            Y.all('#page-color-switcher a').on('click', function(e) {
+                Y.all('#page-color-switcher a.highlight').removeClass('highlight');
+                e.target.addClass('highlight');
+                Y.get('#theme').set('href', 'css/' + e.target.get('title') + '.css');
+                e.halt();
+            });
+
+            Y.all('#page-corner-switcher a').on('click', function(e) {
+                Y.all('#page-corner-switcher a.highlight').removeClass('highlight');
+                e.target.addClass('highlight');
+                if(e.target.get('title') == 'on')
+                    Y.get('body').addClass('rounded');
+                else
+                    Y.get('body').removeClass('rounded');
+                e.halt();
+            });
+         }
+         Y.on("domready", init);
+    });    
+    </script>
+</head>
+<body class="rounded">
+    <div id="doc3" class="yui-t6">
+        <div id="hd">
+            <h1>Pony Express</h1>
+            <div id="navigation">
+                <ul id="primary-navigation">
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/list_templates">Manage Templates</a></li>
+                    <li><a href="/add_template">Create Template</a></li>
+                </ul>
+                <ul id="user-navigation">
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="bd">
+            <div id="yui-main">
+              {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div id="ft">
+            <p class="inner">Copyright &copy; 2011 Tony Landis</p>
+        </div>
+    </div>
+</body>
+</html>

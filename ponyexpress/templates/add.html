@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Create an E-mail Template</h2>
+
+<form action="/create_template" method="post">
+<table cellspacing="0">
+  <tbody>
+    <tr>
+      <td>Tag</td>
+      <td>
+        <input type="text" name="_id" value="" />
+      </td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>
+        <input type="text" name="name" value="" />
+      </td>
+    </tr>
+    <tr>
+      <td>Content Type</td>
+      <td>
+        <select name="format">
+          <option value="text">Plain Text</option>
+          <option value="html">HTML</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Default Language</td>
+      <td>
+        <input type="text" name="lang" value="en" />
+      </td>
+    </tr>
+    <tr>
+      <td>Subject (for default language)</td>
+      <td>
+        <input type="text" name="subject" value="" />
+      </td>
+    </tr>
+    <tr>
+      <td>Body (for default language)</td>
+      <td>
+        <textarea name="body" rows=10 cols=60></textarea>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<input type="submit" name="" value="Save Template" />
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All E-mail Templates</h2>
+<table cellspacing="0" class="zebra">
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>ID</td>
+      <td>Content Type</td>
+      <td>Languages</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in results %}
+    <tr>
+      <td>
+        <a href="/template/{{ row._id }}">{{ row.name }}</a>
+      </td>
+      <td>{{ row._id }}</td>
+      <td>{{ row.format }}</td>
+      <td>
+        {% for r in row.contents %}
+        <p>
+          {{ r.lang }} - {{ r.subject }}
+        </p>
+        {% endfor %}
+      </td>
+      <td>
+        <a href="/delete_template/{{ row._id }}">delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
