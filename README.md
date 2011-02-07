@@ -128,14 +128,14 @@ curl -X PUT http://localhost:4000/send \
 
 If all went well, we should see a response similar to this, where id is the couchdb doc._id of the message log.
 
-{
-  "id": "1cbb1b9400396a1b7cb0e7b35b1eecd4", 
-  "result": true
-}
+	{
+ 	 "id": "1cbb1b9400396a1b7cb0e7b35b1eecd4", 
+ 	 "result": true
+	}
 
 You can view the message doc here:
 
-http://ponyexpress.couchone.com/ponyexpress/1cbb1b9400396a1b7cb0e7b35b1eecd4
+	http://ponyexpress.couchone.com/ponyexpress/1cbb1b9400396a1b7cb0e7b35b1eecd4
 
 
 Configuring Couchdb
@@ -173,26 +173,30 @@ when sending a message will be replaced with the values.
 For example:
 
 	Template Body: 
-	--------------------------------------------------------------------	
-		Hello $name,
-		Your balance is now $new_balance after your purchase of $purchase.
-		Thank you,
-		$sig
-	
+	--------------
+	Hello $name,
+	Your balance is now $new_balance after your purchase of $purchase.
+	Thank you,
+	$sig
+
+
 	Replacement Dict:
-	--------------------------------------------------------------------	
-		{ 'name': 'John',
-			'new_balance': '$25',
-			'puchase': '5 Widgets',
-			'sig': 'The Widget Team\n1-800-222-3333' }
-	
+	-----------------
+	{ 
+		'name': 'John',
+		'new_balance': '$25',
+		'puchase': '5 Widgets',
+		'sig': 'The Widget Team\n1-800-222-3333'
+	}
+
+
 	Rendered Body:
-	--------------------------------------------------------------------	
-		Hello Jogn,
-		Your balance is now $25 after your purchase of 5 Widgets.
-		Thank you,
-		The Widget Team
-		1-800-222-3333'
+	--------------
+	Hello Jogn,
+	Your balance is now $25 after your purchase of 5 Widgets.
+	Thank you,
+	The Widget Team
+	1-800-222-3333'
 
 
 Adding Messages to the Couchdb Queue (python method)
