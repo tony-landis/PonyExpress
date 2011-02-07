@@ -148,6 +148,64 @@ To add the couchdb views required for the reports and lists, run this:
 
 	manage.py couch_sync
 
-You can then restart the PonyExpress
+You can then restart the PonyExpress server and add your own e-mail templates.
 
 
+Managing Email Templates
+------------------------
+
+With the PonyExpress Server running, you can vist http://127.0.0.1:4000/add_template to add an email template.
+
+	Tag: This is the id that you will pass later when actually sending an email
+	Name: A name to help you remember the function of the template later
+	Content Type: If you are entering HTML into the body, select HTML, otherwise select Plain Text
+	Default Language: The default language for this template. en, es, etc...
+	Subject: The subject line for the email
+	Body: The full email body
+
+After saving the template, you will be giving the opportunity to add translations for other languages.
+
+You can use replacements in the Subject and Body, and any keys passed in the replacements dictionary
+when sending a message will be replaced with the values.
+
+For example:
+
+	Body: 
+		
+		Hello $name,
+
+		Your balance is now $new_balance after your purchase of $purchase.
+
+		Thank you,
+		$sig
+	
+	Replacement Dict Passed:
+
+		replacements: [
+			'name': 'John',
+			'new_balance': '$25',
+			'puchase': '5 Widgets',
+			'sig': 'The Widget Team\n1-800-222-3333'
+		]
+
+
+Adding Messages to the Couchdb Queue (python method)
+----------------------------------------------------
+
+
+
+Adding Messages to the Couchdb Queue (non-python method)
+--------------------------------------------------------
+
+
+
+Processing the Couchdb Queue
+----------------------------
+
+
+Sending Messages without Queueing (python method)
+-------------------------------------------------
+
+
+Using Gearman for High Performance 
+----------------------------------
