@@ -75,6 +75,79 @@ being developed on.
 Getting Started with PonyExpress
 ================================
 
-# easy_install PonyExpress
+To get started, clone the git repo and run setup.py
+
+	git clone git@github.com:tony-landis/PonyExpress.git
+	cd PonyExpress
+	python setup.py install
+	cp default_settings.cfg settings.cfg
+
+On linux/unix:
+
+	export PONYEXPRESS_CFG=/FULL PATH TO/settings.cfg
+
+Or on windows:
+
+	set PONYEXPRESS_CFG=\FULL PATH TO\settings.cfg
+
+Edit settings.cfg and set the SMTP string to a valid host and port:
+
+	SMTP_STRING = "mail.server.com|25"
+
+If SMTP authentication is required, then set the SMTP_STRING like this:
+
+	SMTP_STRING = "mail.server.com|25|user|password"
+
+
+Starting the PonyExpress Server
+-------------------------------
+
+You can now startup the PonyExpress web server (http://packages.python.org/Flask-Actions/)
+
+	python ponyexpress/__init__.py
+
+You should see:
+
+ * Running on http://0.0.0.0:4000/
+ * Restarting with reloader...
+
+You can now go to http://127.0.0.1:4000/ with your web browser. Here you can manage
+email templates and view reports. If you are running a gearman server, the ping time,
+jobs, and workers will be summarized there.
+
+
+Sending Your First Email
+------------------------
+
+Here is an example to send an email via the REST API for immediate delivery:
+
+curl -X PUT http://localhost:4000/send \
+	-H "Content-Type: application/json" \
+	-d '{"id":"test", "replacements":{"name":"Your Name", "from":"Pony Express", "sig":"This is my signature\nLine of Signature"}, "tags":["pony","express"], "recipient_name":"Your Name", "recipient_address":"you@you.com", "sender_name":"Pony Express", "sender_address":"you@you.com"}'
+
+If all went well, we should see a response similar to this, where id is the couchdb doc._id of the message log.
+
+{
+  "id": "1cbb1b9400396a1b7cb0e7b35b1eecd4", 
+  "result": true
+}
+
+You can view the message doc here:
+
+http://ponyexpress.couchone.com/ponyexpress/1cbb1b9400396a1b7cb0e7b35b1eecd4
+
+
+Configuring Couchdb
+-------------------
+
+For the example above, we just used the free couchone database I set up for demonstration purpose.
+
+You will need to open settings.cfg again and update COUCH_CONN to your own couch database now.
+
+To add the couchdb views required for the reports and lists, run this:
+
+	manage.py couch_sync
+
+You can then restart the PonyExpress
 
 

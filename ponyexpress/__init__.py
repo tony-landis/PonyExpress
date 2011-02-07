@@ -36,42 +36,26 @@ except Exception, e:
 
 @app.route('/')
 def index():
-	if not 'username' in session: return redirect(url_for('login'))
 	'get some gearman stats'
 	gmc = gearman.GearmanAdminClient([app.config.get('GEARMAN_SERVER','localhost:4730')])
-	gm_status = gmc.get_status()
-	gm_version = gmc.get_version()
-	gm_workers = gmc.get_workers()
-	gm_ping = gmc.ping_server()
+	gm_status, gm_version, gm_workers, gm_ping = 'NA', '', [], 0
+	try:
+		gm_status = gmc.get_status()
+		gm_version = gmc.get_version()
+		gm_workers = gmc.get_workers()
+		gm_ping = gmc.ping_server()
+	except Exception:
+		pass
 	return render_template('index.html', 
 		session=session,
 		gm_status=gm_status, gm_version=gm_version, gm_workers=gm_workers, gm_ping=gm_ping)
 
-@app.route('/login', methods=['GET','POST'])
-def login():
-	if request.method == 'POST':
-		session['username'] = request.form.get('username','')
-		return redirect(url_for('index'))
-	return '''
-		<p>You are not logged in</p>
-		<form action="/login" method="POST">
-			<p><input type=text name=username></p>
-			<p><input type=submit value=Login>
-		</form>
-	'''
-@app.route('/logout')
-def logout():
-	session.pop('username', None)
-	return redirect(url_for('index'))
-
 @app.route('/add_template')
 def add_template():
-	if not 'username' in session: return redirect(url_for('login'))
 	return render_template('add.html')
 
 @app.route('/create_template', methods=['POST'])
 def create_template():
-	if not 'username' in session: return redirect(url_for('login'))
 	"save a new template"
 	try:
 		form = TemplateForm.to_python(request.form)
@@ -94,14 +78,12 @@ def create_template():
 
 @app.route('/delete_template/<doc_id>')
 def delete_template(doc_id):
-	if not 'username' in session: return redirect(url_for('login'))
 	doc = couch.PonyExpressTemplate.get(doc_id)
 	doc.delete()
 	return redirect(url_for('list_templates'))
 
 @app.route('/template/<doc_id>')
 def view_template(doc_id):
-	if not 'username' in session: return redirect(url_for('login'))
 	doc = couch.PonyExpressTemplate.get(doc_id)
 	doc.contents.append(couch.LocalTemplate(lang='NEW',subject='',body=''))
 	contents = enumerate(doc.contents)
@@ -109,7 +91,6 @@ def view_template(doc_id):
 
 @app.route('/save_template/<doc_id>', methods=['POST'])
 def save_template(doc_id):
-	if not 'username' in session: return redirect(url_for('login'))
 	doc = couch.PonyExpressTemplate.get(doc_id)
 	try:
 		form = TemplateForm.to_python(request.form)
@@ -129,7 +110,6 @@ def save_template(doc_id):
 					
 @app.route('/list_templates')
 def list_templates():
-	if not 'username' in session: return redirect(url_for('login'))
 	view = couch.PonyExpressTemplate.view('ponyexpress/all_templates')
 	return render_template('list_templates.html',
 		results=view.all())
@@ -144,7 +124,6 @@ def send():
 		pony = core.PonyExpress.from_dict(request.json)
 		rs = pony.send(config=app.config)
 		return jsonify(rs)
-
 
 def run_queue():
 	"""
