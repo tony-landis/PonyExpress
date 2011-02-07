@@ -192,7 +192,7 @@ For example:
 
 	Rendered Body:
 	--------------
-	Hello Jogn,
+	Hello John,
 	Your balance is now $25 after your purchase of 5 Widgets.
 	Thank you,
 	The Widget Team
