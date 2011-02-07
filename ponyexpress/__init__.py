@@ -125,26 +125,13 @@ def send():
 		rs = pony.send(config=app.config)
 		return jsonify(rs)
 
-def run_queue():
-	"""
-	Send all messages in a status of "queued"
-	"""
-	rs = []
-	for doc in rs:
-		pony = core.PonyExpress.from_couchdb(doc=doc)
-		rs = pony.send(config=app.config)
-		if (rs or {}).get('result'):
-			print "Success: %s" % doc._id
-		else:
-			print "Failed: %s" % doc._id
-	return "Finished processing %s" % len(rs)
+	
+	
+
 
 
 if __name__ == '__main__':
 	# couchdb init
 	couch_db = couch.init(app.config)
-	# TODO - make this part of setup/install ?
-	from couchdbkit.designer import push
-	push('/Users/tony/git/PonyExpress/ponyexpress/_design/ponyexpress', couch_db)
 	# TODO - make the settings below CLI options
 	app.run(host='0.0.0.0', port=4000)

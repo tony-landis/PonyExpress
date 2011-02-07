@@ -62,7 +62,7 @@ class PonyExpress(object):
 		self._sender_address = sender_address or self._sender_address
 		self._tags = tags or []
 		self._replacements = replacements or {}
-	
+
 	def to_json(self):
 		"""
 		Encode the JSON dict to be passed around
@@ -98,7 +98,7 @@ class PonyExpress(object):
 		for k,v in decoded_json.iteritems(): dict[str(k)] = v
 		return cls(**dict)
 	
-	def to_couchdb(self, status='queued', save=True):
+	def to_couchdb(self, status='queued', save=True, config=None):
 		"""
 		Create a PonyExpressMessage document for couchdb logging or queue.
 		"""
@@ -111,8 +111,14 @@ class PonyExpress(object):
 			recipient_address = self._recipient_address,
 			sender_name = self._sender_name,
 			recipient_name = self._recipient_name,
+			replacements = self._replacements,
 			tags = self._tags or [])
-		if save: self._message_doc.save()
+		if save:
+			# couchdb initialized?
+			if not couch.couch_db:
+				config = config or {}
+				couch.init(config)
+			self._message_doc.save()
 		return self._message_doc
 	
 	@classmethod
@@ -211,6 +217,7 @@ class PonyExpress(object):
 		couch so we can retry.
 		"""
 
+		# open an STMP connection if not done already
 		if not self._smtp_connection:
 			try:
 				self.smtp_connect((config or {}).get('SMTP_STRING', None))
@@ -218,6 +225,10 @@ class PonyExpress(object):
 				raise PonyExpressException(self, "SMTP", str(e))
 				return dict(status=False, id=None, error="SMTP: %s" % str(e))
 
+		# init couch if not done alread
+		if not couch.couch_db: couch.init(config=config)
+
+		# load the template
 		try:
 			self._template = couch.PonyExpressTemplate.get(self._id)
 		except Exception, e:
@@ -266,12 +277,17 @@ class PonyExpress(object):
 			'success, log the message to couchdb'
 			if not self._message_doc:
 				self._message_doc = self.to_couchdb(status='sent', save=False)
+			self._message_doc.date = datetime.datetime.now(),
 			self._message_doc.status = 'sent'
 			self._message_doc.subject = subject
 			self._message_doc.body = text_body or html_body
 			self._message_doc.save()
 			return dict(result=True, id=self._message_doc._id)
 		except Exception, e:
+			'if doc is open, update status to failed'
+			if self._message_doc:
+				self._message_doc.status = 'failed'
+				self._message_doc.save()
 			'log the error to couchdb'
 			raise PonyExpressException(self, "SEND", str(e))
 			return dict(result=False, id=None, error="SEND: %s" % str(e))

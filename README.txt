@@ -84,7 +84,7 @@ To get started, clone the git repo and run setup.py
 
 On linux/unix:
 
-	export PONYEXPRESS_CFG=/FULL PATH TO/settings.cfg
+	export PONYEXPRESS_CFG=`pwd`/settings.cfg
 
 Or on windows:
 
@@ -104,6 +104,7 @@ Starting the PonyExpress Server
 
 You can now startup the PonyExpress web server (http://packages.python.org/Flask-Actions/)
 
+	export PONYEXPRESS_CFG=`pwd`/settings.cfg
 	python ponyexpress/__init__.py
 
 You should see:
@@ -140,13 +141,14 @@ http://ponyexpress.couchone.com/ponyexpress/1cbb1b9400396a1b7cb0e7b35b1eecd4
 Configuring Couchdb
 -------------------
 
-For the example above, we just used the free couchone database I set up for demonstration purpose.
+The example above used the free couchone database I set up for demonstration purpose.
 
 You will need to open settings.cfg again and update COUCH_CONN to your own couch database now.
 
 To add the couchdb views required for the reports and lists, run this:
 
-	manage.py couch_sync
+	export PONYEXPRESS_CFG=`pwd`/settings.cfg
+	python manage.py couch_sync
 
 You can then restart the PonyExpress server and add your own e-mail templates.
 
@@ -170,42 +172,158 @@ when sending a message will be replaced with the values.
 
 For example:
 
-	Body: 
-		
+	Template Body: 
+	--------------------------------------------------------------------	
 		Hello $name,
-
 		Your balance is now $new_balance after your purchase of $purchase.
-
 		Thank you,
 		$sig
 	
-	Replacement Dict Passed:
-
-		replacements: [
-			'name': 'John',
+	Replacement Dict:
+	--------------------------------------------------------------------	
+		{ 'name': 'John',
 			'new_balance': '$25',
 			'puchase': '5 Widgets',
-			'sig': 'The Widget Team\n1-800-222-3333'
-		]
+			'sig': 'The Widget Team\n1-800-222-3333' }
+	
+	Rendered Body:
+	--------------------------------------------------------------------	
+		Hello Jogn,
+		Your balance is now $25 after your purchase of 5 Widgets.
+		Thank you,
+		The Widget Team
+		1-800-222-3333'
 
 
 Adding Messages to the Couchdb Queue (python method)
 ----------------------------------------------------
 
+The simplest method to start queuing messages is with the python library.
+
+Here is an example, this message will be stored in couchdb for later processing.
+
+	from ponyexpress.core import PonyExpress
+	pony = PonyExpress(
+		id='test', # The template doc._id
+		sender_name = 'The Widget Team',
+		sender_address = 'sales@widgets.com',
+		recipient_name = 'John Doe',
+		recipient_address = 'john@gmail.com',
+		lang = 'es',
+		replacements = dict(name='John', new_balance=25, purchase='5 Widgets'),
+		tags = ['newbalance','someothertag']
+	)
+	"""
+	if your couchdb does not use the defaults of 127.0.0.1:5984, database 'ponyexpress'
+	then you will need to pass that with the to_couchdb() call. Otherwise do not pass
+	a config value.
+	"""
+	config = {'COUCH_CONN':'http://127.0.0.1:5984', 'COUCH_DB':'ponyexpress'}
+	doc = pony.to_couchdb(config=config)
+	print doc._id
 
 
 Adding Messages to the Couchdb Queue (non-python method)
 --------------------------------------------------------
 
+You can achieve the same result as above without using the python library.
+
+Just put the a document in your couchdb using this structure:
+
+	curl -X POST http://127.0.0.1:5984/ponyexpress/ \
+		-H "Content-Type: application/json" \
+		-d '{"doc_type": "PonyExpressMessage", 
+	   		"template": "test", 
+  	 		"status": "queued", 
+				"sender_name": "The Widget Team",
+				"sender_address": "sales@widgets.com", 
+				"recipient_name": "John Doe", 
+				"recipient_address": "john@gmail.com", 
+				"lang": "en", 
+				"replacements": { "name":"John", "new_balance":"$25", "purchase":"5 Widgets" }, 
+				"tags":["newbalance", "someothertag"]}'
 
 
 Processing the Couchdb Queue
 ----------------------------
 
+After adding emails into the queue using one of the couchdb methods below, 
+the next step is to process the queue. To do so, simply run the following command:
+
+	export PONYEXPRESS_CFG=`pwd`/settings.cfg
+	python manage.py queue
+
+You should see something like this:
+
+	Connecting to Couchdb...
+	Success: 1bc02b88ef8125a9ea72f1c54692bab9
+	Finished processing 1 messages
+
 
 Sending Messages without Queueing (python method)
 -------------------------------------------------
 
+If you want to send a message withough putting it in a queue,
+you must use the python library:
+
+	from ponyexpress.core import PonyExpress
+	pony = PonyExpress(
+		id='test', # The template doc._id
+		sender_name = 'The Widget Team',
+		sender_address = 'sales@widgets.com',
+		recipient_name = 'John Doe',
+		recipient_address = 'john@gmail.com',
+		lang = 'es',
+		replacements = dict(name='John', new_balance=25, purchase='5 Widgets'),
+		tags = ['newbalance','someothertag']
+	)
+
+	"""
+	If your couchdb does not use the defaults of 127.0.0.1:5984, database 'ponyexpress'
+	then you will need to pass that with the send() call.
+
+	Also, if you use something other than localhost:25 for SMTP or need to provide 
+	SMTP auth, you will need to pass that in the config.
+	
+	Otherwise do not pass a config value.
+	"""
+	config = {'COUCH_CONN':'http://127.0.0.1:5984', 'COUCH_DB':'ponyexpress', 'SMTP_STRING':'mail.some.com|25|user|pass'}
+	rs = pony.send(config=config)
+	print rs
+
+
 
 Using Gearman for High Performance 
 ----------------------------------
+
+To utilize gearman for high performance messaging, you must first start 
+the python worker script for gearman. This assumes you have already configured
+the correct gearman ip:port in settings.cfg and have a gearmand service running
+at that ip:port.
+
+	export PONYEXPRESS_CFG=`pwd`/settings.cfg
+	python run_gearman.py
+
+You can now hand off jobs to gearman, here is an example for Python:
+	
+	from ponyexpress.gearman_interface import PonyExpressClient
+	pony = PonyExpressClient(
+		id='test', # The template doc._id
+		sender_name = 'The Widget Team',
+		sender_address = 'sales@widgets.com',
+		recipient_name = 'John Doe',
+		recipient_address = 'john@gmail.com',
+		lang = 'es',
+		replacements = dict(name='John', new_balance=25, purchase='5 Widgets'),
+		tags = ['newbalance','someothertag']
+	)
+
+	# send in background, non blocking
+	rs = pony.to_gearman(['localhost:4730'], background=True, wait_until_complete=False)
+	print "Status: %s" % rs.get('result')
+	print "Doc Id: %s" % rs.get('id')
+
+	# send and wait for response
+	rs = pony.to_gearman(['localhost:4730'])
+	print "Status: %s" % rs.get('result')
+	print "Doc Id: %s" % rs.get('id')

@@ -7,13 +7,12 @@ from couchdbkit import *
 couch_db = None
 
 def init(config, couch_db=couch_db):
-	server = Server(config.get('COUCH_CONN', 'htttp://127.0.0.1:5984'))
+	server = Server(config.get('COUCH_CONN', 'http://127.0.0.1:5984'))
 	couch_db = server.get_or_create_db(config.get('COUCH_DB', 'ponyexpress'))
 	PonyExpressTemplate.set_db(couch_db)
 	PonyExpressError.set_db(couch_db)
 	PonyExpressMessage.set_db(couch_db)
 	return couch_db
-	
 
 class LocalTemplate(DocumentSchema):
 	"""
@@ -58,3 +57,9 @@ class PonyExpressMessage(Document):
 	replacements = DictProperty()
 	subject = StringProperty()
 	body = StringProperty()
+
+	@classmethod
+	def by_status(cls, status, **kwargs):
+		"view by status (queued, sent, failed)"
+		return cls.view('ponyexpress/messages_by_status', key=status, **kwargs)
+	
