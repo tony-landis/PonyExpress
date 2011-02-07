@@ -1,5 +1,0 @@
-#!/bin/sh
-
-curl -X PUT http://localhost:4000/send \
-	-H "Content-Type: application/json" \
-	-d '{"id":"test", "replacements":{"key":"value", "foo":"bar"}, "tags":["pony","express"], "recipient_name":"Tony Landis", "recipient_address":"tony.landis@gmail.com", "sender_name":"XYZ Corp", "sender_address":"sales@xyzcorp.com"}'
