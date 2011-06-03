@@ -23,13 +23,13 @@ def couch_sync(app):
 		path = path.replace('/manage.py','')
 		if not path:
 			return "You must provide the path to PonyExpress"
-		dir = '%s/ponyexpress/_design/ponyexpress' % path
-		print ""
-		print "Syncronizing Couchdb Views from "
-		print dir
-		print ""
-		couch_db = couch.init(app.config)
-		push(dir, couch_db)
+		for sub in ['ponyexpress','stats']:
+			dir = '%s/ponyexpress/_design/%s' % (path,sub)
+			print "Syncronizing Couchdb Views from "
+			print dir
+			print ""
+			couch_db = couch.init(app.config)
+			push(dir, couch_db)
 	return action
 
 
