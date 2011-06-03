@@ -165,7 +165,7 @@ With the PonyExpress Server running, you can vist http://127.0.0.1:4000/add_temp
 	Subject: The subject line for the email
 	Body: The full email body
 
-After saving the template, you will be giving the opportunity to add translations for other languages.
+After saving the template, you will be given the opportunity to add translations for other languages.
 
 You can use replacements in the Subject and Body, and any keys passed in the replacements dictionary
 when sending a message will be replaced with the values.

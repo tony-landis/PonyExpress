@@ -277,7 +277,7 @@ class PonyExpress(object):
 			'success, log the message to couchdb'
 			if not self._message_doc:
 				self._message_doc = self.to_couchdb(status='sent', save=False)
-			self._message_doc.date = datetime.datetime.now(),
+			self._message_doc.date = datetime.datetime.now()
 			self._message_doc.status = 'sent'
 			self._message_doc.subject = subject
 			self._message_doc.body = text_body or html_body
