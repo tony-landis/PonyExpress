@@ -4,6 +4,7 @@ import couch
 import formencode
 import gearman
 
+
 class TemplateForm(formencode.Schema):
 	"""
 	Formencode Form validators for Email Template add/edit
