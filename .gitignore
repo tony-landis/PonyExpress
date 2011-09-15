@@ -4,4 +4,6 @@
 settings.cfg
 dist
 *.pyc
+build/*
+.pypirc
 
