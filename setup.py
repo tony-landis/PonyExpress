@@ -18,5 +18,6 @@ setup(
 			'Flask-Actions',
 			'formencode',
 			'couchdbkit',
+			'gearman',
 		]
 )
