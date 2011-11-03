@@ -45,3 +45,4 @@ def queue():
 			print "Failed: %s" % doc._id
 	print "Finished processing %s messages" % i 
 	print ""
+	return 'Finished Processing %i messages(s)' % i

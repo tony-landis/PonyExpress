@@ -75,7 +75,11 @@ being developed on.
 Getting Started with PonyExpress
 ================================
 
-To get started, clone the git repo and run setup.py
+Using PIP:
+
+	pip install -e git+ssh://git@github.com/tony-landis/PonyExpress.git#egg=ponyexpress
+
+Or, clone the git repo and run setup.py
 
 	git clone git@github.com:tony-landis/PonyExpress.git
 	cd PonyExpress
