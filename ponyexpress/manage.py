@@ -36,6 +36,9 @@ def queue():
 			rs = pony.send(config=app.config)
 		except Exception, e:
 			print "Exception: %s" % e
+			'update status to failed'
+			doc.status = 'failed'
+			doc.save()
 		if (rs or {}).get('result'):
 			print "Success: %s" % doc._id
 		else:
