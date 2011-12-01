@@ -17,7 +17,6 @@ def couch_sync():
 	path = path.replace('/manage.py','')
 	if not path:
 		return "You must provide the path to PonyExpress"
-	#for sub in ['ponyexpress','stats']:
 	dir = '%s/ponyexpress/_design' % path
 	print "Syncronizing Couchdb Views from %s" % dir
 	loader = FileSystemDocsLoader(dir)
@@ -46,3 +45,15 @@ def queue():
 	print "Finished processing %s messages" % i 
 	print ""
 	return 'Finished Processing %i messages(s)' % i
+
+def no_date():
+	print "updating all without dates to queued"
+	i = 0
+	for doc in couch.PonyExpressMessage.no_date(limit=200).all():
+		doc.status = 'queued'
+		doc.save()
+		i += 1
+	return 'Finished Processing %i orphans(s)' % i
+
+	
+

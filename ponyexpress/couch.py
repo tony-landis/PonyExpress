@@ -63,3 +63,8 @@ class PonyExpressMessage(Document):
 		"view by status (queued, sent, failed)"
 		return cls.view('ponyexpress/messages_by_status', key=status, **kwargs)
 	
+	@classmethod
+	def no_date(cls, **kwargs):
+		"view all with no date"
+		return cls.view('ponyexpress/messages_no_date', **kwargs)
+	
