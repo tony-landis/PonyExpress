@@ -66,5 +66,5 @@ class PonyExpressMessage(Document):
 	@classmethod
 	def no_date(cls, **kwargs):
 		"view all with no date"
-		return cls.view('ponyexpress/messages_no_date', **kwargs)
+		return cls.view('messages_no_date/all', **kwargs)
 	
