@@ -50,7 +50,7 @@ def no_date():
 	print "updating all without dates to queued"
 	i = 0
 	couch.init(app.config)
-	for doc in couch.PonyExpressMessage.no_date(limit=200).all():
+	for doc in couch.PonyExpressMessage.no_date(limit=1200).all():
 		if doc.template == 'vp_shared':
 			doc.delete()
 			continue
