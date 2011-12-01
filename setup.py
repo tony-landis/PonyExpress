@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='PonyExpress',
-    version='0.17stable',
+    version='0.18stable',
 		author = 'Tony Landis',
 		author_email = 'tony.landis@gmail.com',
     packages=['ponyexpress',],
