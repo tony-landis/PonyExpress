@@ -51,6 +51,9 @@ def no_date():
 	i = 0
 	couch.init(app.config)
 	for doc in couch.PonyExpressMessage.no_date(limit=200).all():
+		if doc.template == 'vp_shared':
+			doc.delete()
+			continue
 		doc.status = 'queued'
 		doc.save()
 		i += 1
