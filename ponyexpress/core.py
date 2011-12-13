@@ -266,10 +266,14 @@ class PonyExpress(object):
 			format = 'text'
 			msg = MIMEText(text_body.encode('utf-8', 'replace'), 'plain', 'utf-8')
 
+		'message basics'
 		msg['Subject'] = subject
 		msg['Return-Path'] = self._sender_address
 		msg['From'] = "%s <%s>" % (self._sender_name, self._sender_address)
 		msg['To'] = self._recipient_address
+
+		'Set X-Campaign-Id for MailGun Campaigns'
+		msg['X-Campaign-Id'] = self._id
 
 		try:
 			'try sending the message via SMTP'
